@@ -17,10 +17,21 @@
   .hide-sb::-webkit-scrollbar { display: none; }
   .hide-sb { scrollbar-width: none; -ms-overflow-style: none; }
   @keyframes tbpop { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  /* Responsive: fill the screen on phone-sized / short viewports, keep the mockup on larger ones */
+  @media (max-width: 440px), (max-height: 880px) {
+    .tb-stage { padding: 0 !important; align-items: stretch !important; background: #f6f8f9 !important; }
+    .tb-phone {
+      width: 100vw !important;
+      height: 100dvh !important;
+      max-width: 100vw !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
+  }
 </style>
 </helmet>
-<div ref="{{ rootRef }}" style="width:100%; min-height:100vh; background:#e5e5ea; display:flex; align-items:center; justify-content:center; font-family:Inter,-apple-system,sans-serif; padding:24px 0;">
-  <div style="position:relative; width:375px; height:812px; background:#f6f8f9; border-radius:44px; box-shadow:0 8px 24px rgba(0,0,0,0.2); overflow:hidden; display:flex; flex-direction:column;">
+<div ref="{{ rootRef }}" class="tb-stage" style="width:100%; min-height:100vh; background:#e5e5ea; display:flex; align-items:center; justify-content:center; font-family:Inter,-apple-system,sans-serif; padding:24px 0;">
+  <div class="tb-phone" style="position:relative; width:375px; height:812px; background:#f6f8f9; border-radius:44px; box-shadow:0 8px 24px rgba(0,0,0,0.2); overflow:hidden; display:flex; flex-direction:column;">
 
     <!-- ════════════ STATION SCREEN ════════════ -->
     <sc-if value="{{ isStation }}" hint-placeholder-val="{{ true }}">
