@@ -50,15 +50,15 @@
           </div>
         </div>
         <!-- Bottom row: buttons + player -->
-        <div style="display:flex; gap:8px; align-items:center; padding:8px 16px 0; min-height:56px;">
+        <div ref="{{ bottomRowRef }}" style="display:flex; gap:8px; align-items:center; padding:8px 16px 0; overflow:hidden; max-height:72px; transition:max-height .3s cubic-bezier(.4,0,.2,1), opacity .22s ease, transform .3s cubic-bezier(.4,0,.2,1), padding-top .3s cubic-bezier(.4,0,.2,1);">
           <div style="display:flex; gap:8px; align-items:center; flex-shrink:0;">
             <div style="display:flex; gap:4px; align-items:center; padding:6px 16px; border:1px solid #27292d; border-radius:999px;">
-              <svg width="7" height="7" viewBox="0 0 9.33333 9.33333"><path d="M8.66667 5.33333H5.33333V8.66667C5.33333 9.03333 5.03333 9.33333 4.66667 9.33333C4.3 9.33333 4 9.03333 4 8.66667V5.33333H0.666667C0.3 5.33333 0 5.03333 0 4.66667C0 4.3 0.3 4 0.666667 4H4V0.666667C4 0.3 4.3 0 4.66667 0C5.03333 0 5.33333 0.3 5.33333 0.666667V4H8.66667C9.03333 4 9.33333 4.3 9.33333 4.66667C9.33333 5.03333 9.03333 5.33333 8.66667 5.33333Z" fill="#27292D"></path></svg>
-              <span style="font-weight:600; font-size:16px; line-height:20px; color:#27292d; white-space:nowrap;">Library</span>
+              <svg width="7" height="7" viewBox="0 0 9.33333 9.33333" style="width: 8px; height: 8px"><path d="M8.66667 5.33333H5.33333V8.66667C5.33333 9.03333 5.03333 9.33333 4.66667 9.33333C4.3 9.33333 4 9.03333 4 8.66667V5.33333H0.666667C0.3 5.33333 0 5.03333 0 4.66667C0 4.3 0.3 4 0.666667 4H4V0.666667C4 0.3 4.3 0 4.66667 0C5.03333 0 5.33333 0.3 5.33333 0.666667V4H8.66667C9.03333 4 9.33333 4.3 9.33333 4.66667C9.33333 5.03333 9.03333 5.33333 8.66667 5.33333Z" fill="#27292D"></path></svg>
+              <span style="font-weight: 600; font-size: 14px; line-height: 20px; color: #27292d; white-space: nowrap">Library</span>
             </div>
             <div style="display:flex; gap:4px; align-items:center; padding:6px 16px; border:1px solid #27292d; border-radius:999px;">
-              <svg width="7" height="7" viewBox="0 0 9.33333 9.33333"><path d="M8.66667 5.33333H5.33333V8.66667C5.33333 9.03333 5.03333 9.33333 4.66667 9.33333C4.3 9.33333 4 9.03333 4 8.66667V5.33333H0.666667C0.3 5.33333 0 5.03333 0 4.66667C0 4.3 0.3 4 0.666667 4H4V0.666667C4 0.3 4.3 0 4.66667 0C5.03333 0 5.33333 0.3 5.33333 0.666667V4H8.66667C9.03333 4 9.33333 4.3 9.33333 4.66667C9.33333 5.03333 9.03333 5.33333 8.66667 5.33333Z" fill="#27292D"></path></svg>
-              <span style="font-weight:600; font-size:16px; line-height:20px; color:#27292d; white-space:nowrap;">Preset</span>
+              <svg width="7" height="7" viewBox="0 0 9.33333 9.33333" style="width: 8px; height: 8px"><path d="M8.66667 5.33333H5.33333V8.66667C5.33333 9.03333 5.03333 9.33333 4.66667 9.33333C4.3 9.33333 4 9.03333 4 8.66667V5.33333H0.666667C0.3 5.33333 0 5.03333 0 4.66667C0 4.3 0.3 4 0.666667 4H4V0.666667C4 0.3 4.3 0 4.66667 0C5.03333 0 5.33333 0.3 5.33333 0.666667V4H8.66667C9.03333 4 9.33333 4.3 9.33333 4.66667C9.33333 5.03333 9.03333 5.33333 8.66667 5.33333Z" fill="#27292D"></path></svg>
+              <span style="font-weight: 600; font-size: 14px; line-height: 20px; color: #27292d; white-space: nowrap">Preset</span>
             </div>
           </div>
           <div style="display:flex; flex:1; gap:8px; align-items:center; justify-content:flex-end; min-width:0;">
@@ -77,7 +77,7 @@
       </div>
 
       <!-- Scrollable content -->
-      <div class="hide-sb" style="overflow-y:auto;">
+      <div class="hide-sb" onScroll="{{ onScroll }}" style="overflow-y:auto;">
         <div style="display:flex; flex-direction:column; gap:16px; padding:16px 0;">
 
           <!-- Tabs -->
@@ -516,6 +516,8 @@ class Component extends DCLogic {
     super(props);
     this.chatRef = React.createRef();
     this.rootRef = React.createRef();
+    this.bottomRowRef = React.createRef();
+    this._collapsed = false;
     this.state = {
       screen: (props && props.startScreen) || "station",
       tab: "voice",
@@ -653,6 +655,19 @@ class Component extends DCLogic {
       isAndroid: platform === "android",
       chatRef: this.chatRef,
       rootRef: this.rootRef,
+      bottomRowRef: this.bottomRowRef,
+      onScroll: (e) => {
+        const top = e.target.scrollTop;
+        const collapsed = top > 16;
+        if (collapsed === this._collapsed) return;
+        this._collapsed = collapsed;
+        const el = this.bottomRowRef.current;
+        if (!el) return;
+        el.style.maxHeight = collapsed ? "0px" : "72px";
+        el.style.opacity = collapsed ? "0" : "1";
+        el.style.paddingTop = collapsed ? "0px" : "8px";
+        el.style.transform = collapsed ? "translateY(-8px)" : "translateY(0)";
+      },
       trending, latest, recentlyPlayed, podcasts, playlists, mostPlayed,
     };
   }
