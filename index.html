@@ -19,10 +19,18 @@
   @keyframes tbpop { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
   /* Responsive: fill the screen on phone-sized / short viewports, keep the mockup on larger ones */
   @media (max-width: 440px), (max-height: 880px) {
-    .tb-stage { padding: 0 !important; align-items: stretch !important; background: #f6f8f9 !important; }
+    html, body { height: 100%; overflow: hidden; }
+    .tb-stage {
+      padding: 0 !important;
+      align-items: stretch !important;
+      background: #f6f8f9 !important;
+      min-height: 0 !important;
+      height: var(--app-h, 100dvh) !important;
+      overflow: hidden !important;
+    }
     .tb-phone {
       width: 100vw !important;
-      height: 100dvh !important;
+      height: 100% !important;
       max-width: 100vw !important;
       border-radius: 0 !important;
       box-shadow: none !important;
@@ -555,7 +563,33 @@ class Component extends DCLogic {
     });
   }
 
-  componentDidMount() { this.applyAccent(); this.hydrateImgs(); }
+  syncViewport() {
+    const vv = window.visualViewport;
+    const h = vv ? vv.height : window.innerHeight;
+    document.documentElement.style.setProperty("--app-h", h + "px");
+    const el = this.chatRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }
+
+  componentDidMount() {
+    this.applyAccent();
+    this.hydrateImgs();
+    this._vvHandler = () => this.syncViewport();
+    this.syncViewport();
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", this._vvHandler);
+      window.visualViewport.addEventListener("scroll", this._vvHandler);
+    }
+    window.addEventListener("resize", this._vvHandler);
+  }
+
+  componentWillUnmount() {
+    if (window.visualViewport) {
+      window.visualViewport.removeEventListener("resize", this._vvHandler);
+      window.visualViewport.removeEventListener("scroll", this._vvHandler);
+    }
+    window.removeEventListener("resize", this._vvHandler);
+  }
 
   componentDidUpdate() {
     this.applyAccent();
