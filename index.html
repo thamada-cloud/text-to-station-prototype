@@ -411,7 +411,7 @@
                 <sc-if value="{{ msg.audio }}" hint-placeholder-val="{{ false }}">
                   <div style="display:flex; justify-content:flex-end; padding-right:16px; animation:tbpop .25s ease;">
                     <div style="background:#0a84ff; border-radius:24px 12px 4px 24px; padding:10px 12px; display:flex; align-items:center; gap:10px;">
-                      <div style="width:30px; height:30px; border-radius:999px; background:rgba(255,255,255,0.25); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                      <div onMouseDown="{{ msg.play }}" style="width:30px; height:30px; border-radius:999px; background:rgba(255,255,255,0.25); display:flex; align-items:center; justify-content:center; flex-shrink:0; cursor:pointer;">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"></path></svg>
                       </div>
                       <svg width="96" height="22" viewBox="0 0 96 22" fill="none" preserveAspectRatio="none"><g fill="#fff"><rect x="0" y="9" width="2" height="4" rx="1"></rect><rect x="5" y="7" width="2" height="8" rx="1"></rect><rect x="10" y="4" width="2" height="14" rx="1"></rect><rect x="15" y="8" width="2" height="6" rx="1"></rect><rect x="20" y="2" width="2" height="18" rx="1"></rect><rect x="25" y="6" width="2" height="10" rx="1"></rect><rect x="30" y="9" width="2" height="4" rx="1"></rect><rect x="35" y="3" width="2" height="16" rx="1"></rect><rect x="40" y="7" width="2" height="8" rx="1"></rect><rect x="45" y="1" width="2" height="20" rx="1"></rect><rect x="50" y="8" width="2" height="6" rx="1"></rect><rect x="55" y="5" width="2" height="12" rx="1"></rect><rect x="60" y="9" width="2" height="4" rx="1"></rect><rect x="65" y="4" width="2" height="14" rx="1"></rect><rect x="70" y="7" width="2" height="8" rx="1"></rect><rect x="75" y="2" width="2" height="18" rx="1"></rect><rect x="80" y="8" width="2" height="6" rx="1"></rect><rect x="85" y="6" width="2" height="10" rx="1"></rect><rect x="90" y="9" width="2" height="4" rx="1"></rect></g></svg>
@@ -766,8 +766,9 @@ class Component extends DCLogic {
 
   sendRecording() {
     const dur = this.fmtTime(this.state.recSeconds);
+    const url = this._audioURL;
     this.setState((s) => ({
-      messages: [...s.messages, { id: s.messages.length, isAgent: false, isUser: false, audio: true, dur: dur }],
+      messages: [...s.messages, { id: s.messages.length, isAgent: false, isUser: false, audio: true, dur: dur, url: url, play: () => { try { new Audio(url).play().catch(function(){}); } catch (e) {} } }],
       recState: "idle",
       recSeconds: 0,
     }), () => { this.stationReply(); });
