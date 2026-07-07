@@ -667,15 +667,22 @@ class Component extends DCLogic {
       this._levels = [];
       this._chunks = [];
       try {
-        this._rec = new MediaRecorder(stream);
+        let mt = "";
+        const cand = ["audio/mp4", "audio/webm;codecs=opus", "audio/webm", "audio/ogg"];
+        if (window.MediaRecorder && MediaRecorder.isTypeSupported) {
+          for (let i = 0; i < cand.length; i++) { if (MediaRecorder.isTypeSupported(cand[i])) { mt = cand[i]; break; } }
+        }
+        this._recMime = mt;
+        this._rec = mt ? new MediaRecorder(stream, { mimeType: mt }) : new MediaRecorder(stream);
         this._rec.ondataavailable = (e) => { if (e.data && e.data.size) this._chunks.push(e.data); };
         this._rec.onstop = () => {
           try {
-            const blob = new Blob(this._chunks, { type: (this._chunks[0] && this._chunks[0].type) || "audio/webm" });
+            const blob = new Blob(this._chunks, { type: this._recMime || (this._chunks[0] && this._chunks[0].type) || "audio/webm" });
+            if (this._audioURL) { try { URL.revokeObjectURL(this._audioURL); } catch (e2) {} }
             this._audioURL = URL.createObjectURL(blob);
           } catch (e) {}
         };
-        this._rec.start();
+        this._rec.start(100);
       } catch (e) {}
       try {
         const AC = window.AudioContext || window.webkitAudioContext;
@@ -752,9 +759,11 @@ class Component extends DCLogic {
   playRecording() {
     try {
       if (!this._audioURL) return;
-      if (this._player) { this._player.pause(); }
-      this._player = new Audio(this._audioURL);
-      this._player.play().catch(() => {});
+      if (!this._player) this._player = new Audio();
+      this._player.src = this._audioURL;
+      this._player.currentTime = 0;
+      const p = this._player.play();
+      if (p && p.catch) p.catch(function () {});
     } catch (e) {}
   }
 
