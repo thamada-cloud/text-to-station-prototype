@@ -423,7 +423,7 @@
             <div style="display:flex; align-items:center; gap:8px;">
               <input type="text" value="{{ input }}" onInput="{{ onInput }}" onKeyDown="{{ onKey }}" onFocus="{{ onFocus }}" onBlur="{{ onBlur }}" maxlength="300" placeholder="Send text or record audio" style="flex:1; background:#e6eaed; border:none; border-radius:999px; padding:14px 16px; font-family:Inter,sans-serif; font-weight:400; font-size:16px; line-height:20px; color:#27292d; outline:none;">
               <sc-if value="{{ hasInput }}" hint-placeholder-val="{{ false }}">
-                <div onClick="{{ send }}" style="background:#0a84ff; border-radius:999px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; flex-shrink:0; cursor:pointer;">
+                <div onMouseDown="{{ send }}" style="background:#0a84ff; border-radius:999px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; flex-shrink:0; cursor:pointer;">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M5 12l7-7 7 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                 </div>
               </sc-if>
@@ -678,7 +678,7 @@ class Component extends DCLogic {
       input: s.input,
       onInput: (e) => this.setState({ input: e.target.value }),
       onKey: (e) => { if (e.key === "Enter") this.send(); },
-      send: () => this.send(),
+      send: (e) => { if (e && e.preventDefault) e.preventDefault(); this.send(); },
       hasInput: s.input.trim().length > 0,
       count: s.input.length,
       clearInput: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ input: "" }); },
