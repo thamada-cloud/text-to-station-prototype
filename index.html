@@ -496,6 +496,7 @@
     <sc-if value="{{ confirmDiscard }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute; inset:0; z-index:60; display:flex; align-items:center; justify-content:center; padding:0 28px;">
       <div onClick="{{ cancelDiscard }}" style="position:absolute; inset:0; background:rgba(0,0,0,0.3);"></div>
+      <sc-if value="{{ isIOS }}" hint-placeholder-val="{{ true }}">
       <div style="position:relative; width:270px; background:#ffffff; border-radius:14px; overflow:hidden; box-shadow:0 12px 48px rgba(0,0,0,0.28); animation:tbpop .2s ease;">
         <div style="padding:19px 16px 15px; text-align:center;">
           <p style="margin:0 0 3px; font-weight:600; font-size:17px; line-height:22px; color:#000;">Discard Audio Recording?</p>
@@ -506,6 +507,17 @@
           <div onClick="{{ doDiscard }}" style="flex:1; padding:11px 8px; text-align:center; font-weight:600; font-size:17px; color:#ff3b30; cursor:pointer;">Discard</div>
         </div>
       </div>
+      </sc-if>
+      <sc-if value="{{ isAndroid }}" hint-placeholder-val="{{ false }}">
+      <div style="position:relative; width:300px; background:#fef7ff; border-radius:28px; padding:24px; box-shadow:0 12px 48px rgba(0,0,0,0.32); animation:tbpop .2s ease;">
+        <p style="margin:0 0 12px; font-family:Roboto,Inter,sans-serif; font-weight:500; font-size:22px; line-height:28px; color:#1d1b20;">Discard audio recording?</p>
+        <p style="margin:0 0 24px; font-family:Roboto,Inter,sans-serif; font-weight:400; font-size:14px; line-height:20px; color:#49454f;">Your recorded audio will be permanently deleted.</p>
+        <div style="display:flex; justify-content:flex-end; gap:8px;">
+          <div onClick="{{ cancelDiscard }}" style="padding:10px 12px; border-radius:999px; font-family:Roboto,Inter,sans-serif; font-weight:500; font-size:14px; line-height:20px; color:#65558f; cursor:pointer;">Cancel</div>
+          <div onClick="{{ doDiscard }}" style="padding:10px 12px; border-radius:999px; font-family:Roboto,Inter,sans-serif; font-weight:500; font-size:14px; line-height:20px; color:#b3261e; cursor:pointer;">Discard</div>
+        </div>
+      </div>
+      </sc-if>
     </div>
     </sc-if>
 
