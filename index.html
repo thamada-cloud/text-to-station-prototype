@@ -678,6 +678,7 @@ class Component extends DCLogic {
       input: "",
       kbOpen: false,
     }));
+    try { const root = this.rootRef.current; const inp = root && root.querySelector("input"); if (inp) inp.blur(); } catch (e) {}
     this.stationReply();
   }
 
