@@ -788,6 +788,7 @@ class Component extends DCLogic {
   send() {
     const t = this.state.input.trim();
     if (!t) return;
+    try { if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); } catch (e) {}
     this.setState((s) => ({
       messages: [...s.messages, { id: s.messages.length, isAgent: false, isUser: true, text: t }],
       input: "",
