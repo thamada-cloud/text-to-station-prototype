@@ -424,7 +424,7 @@
             </div>
           </div>
 
-          <sc-if value="{{ hasUser }}" hint-placeholder-val="{{ false }}">
+          <sc-if value="{{ showNotifPrompt }}" hint-placeholder-val="{{ false }}">
           <div style="background:#f6f8f9; padding:12px 16px 0;">
             <p style="margin:0; font-weight:400; font-size:14px; line-height:16px; color:#27292d; text-align:center;">Get notified about replies, your contest entries, shout outs, and song requests from the station</p>
             <div onClick="{{ openNotif }}" style="border-radius:999px; width:100%; padding:12px 16px; font-weight:600; font-size:14px; line-height:16px; color:#0055b7; text-align:center; cursor:pointer;">Enable Notifications</div>
@@ -534,7 +534,7 @@
           <p style="margin:0; font-weight:400; font-size:13px; line-height:17px; color:#000;">Notifications may include alerts, sounds, and icon badges. These can be configured in Settings.</p>
         </div>
         <div style="display:flex; border-top:0.5px solid rgba(60,60,67,0.29);">
-          <div onClick="{{ closeNotif }}" style="flex:1; padding:11px 8px; text-align:center; font-weight:400; font-size:17px; color:#007aff; cursor:pointer; border-right:0.5px solid rgba(60,60,67,0.29);">Don't Allow</div>
+          <div onClick="{{ denyNotif }}" style="flex:1; padding:11px 8px; text-align:center; font-weight:400; font-size:17px; color:#007aff; cursor:pointer; border-right:0.5px solid rgba(60,60,67,0.29);">Don't Allow</div>
           <div onClick="{{ closeNotif }}" style="flex:1; padding:11px 8px; text-align:center; font-weight:600; font-size:17px; color:#007aff; cursor:pointer;">Allow</div>
         </div>
       </div>
@@ -551,7 +551,7 @@
         <p style="margin:0 0 28px; font-weight:500; font-size:18px; line-height:24px; color:#1c1b1f; text-align:center;">Allow Z100 to send you notifications?</p>
         <div style="display:flex; flex-direction:column; gap:2px;">
           <div onClick="{{ closeNotif }}" style="padding:13px; text-align:center; font-weight:600; font-size:14px; letter-spacing:0.2px; color:var(--accent,#c6002b); cursor:pointer; border-radius:999px;">Allow</div>
-          <div onClick="{{ closeNotif }}" style="padding:13px; text-align:center; font-weight:600; font-size:14px; letter-spacing:0.2px; color:var(--accent,#c6002b); cursor:pointer; border-radius:999px;">Don't allow</div>
+          <div onClick="{{ denyNotif }}" style="padding:13px; text-align:center; font-weight:600; font-size:14px; letter-spacing:0.2px; color:var(--accent,#c6002b); cursor:pointer; border-radius:999px;">Don't allow</div>
         </div>
       </div>
       </sc-if>
@@ -579,6 +579,7 @@ class Component extends DCLogic {
       input: "",
       kbOpen: false,
       notifModal: false,
+      notifDenied: false,
       recState: "idle",
       recSeconds: 0,
       playingKey: null,
@@ -678,7 +679,7 @@ class Component extends DCLogic {
       input: "",
       kbOpen: false,
     }));
-    try { const root = this.rootRef.current; const inp = root && root.querySelector("input"); if (inp) inp.blur(); } catch (e) {}
+    try { const root = this.rootRef.current; const inp = root && root.querySelector("input"); if (inp) { inp.setAttribute("readonly", "readonly"); inp.blur(); setTimeout(() => { try { inp.removeAttribute("readonly"); } catch (e2) {} }, 120); } } catch (e) {}
     this.stationReply();
   }
 
@@ -983,7 +984,9 @@ class Component extends DCLogic {
       hasUser: s.messages.some((m) => m.isUser),
       showNotif: s.notifModal,
       openNotif: () => this.setState({ notifModal: true }),
-      closeNotif: () => this.setState({ notifModal: false }),
+      closeNotif: () => this.setState({ notifModal: false, notifDenied: true }),
+      denyNotif: () => this.setState({ notifModal: false, notifDenied: true }),
+      showNotifPrompt: s.messages.some((m) => m.isUser) && s.notifDenied !== true,
       isIOS: platform === "ios",
       isAndroid: platform === "android",
       chatRef: this.chatRef,
