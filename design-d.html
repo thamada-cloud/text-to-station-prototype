@@ -1097,7 +1097,7 @@ class Component extends DCLogic {
       vCountdownCanvasRef: this.vCountdownCanvasRef,
       startVoiceRec: (e) => { if (e && e.preventDefault) e.preventDefault(); this.startVoiceRec(); },
       showMicPrompt: s.showMicPrompt === true,
-      allowMic: () => { this.setState({ showMicPrompt: false, micGranted: true }); try { if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) navigator.mediaDevices.getUserMedia({ audio: true }).then((st) => { try { st.getTracks().forEach((t) => t.stop()); } catch (e) {} }).catch(() => {}); } catch (e) {} this._beginCountdown(); },
+      allowMic: () => { this.setState({ showMicPrompt: false, micGranted: true }); this._beginCountdown(); },
       denyMic: () => this.setState({ showMicPrompt: false }),
       cancelCountdown: () => { if (this._cdTimer) { clearInterval(this._cdTimer); this._cdTimer = null; } this.setState({ voiceRec: "idle", vCountdown: 3, vSeconds: 0 }); },
       stopVoiceRec: () => this.stopVoiceRec(),
