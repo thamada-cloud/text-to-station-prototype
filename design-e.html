@@ -823,22 +823,7 @@ class Component extends DCLogic {
       this._vvRaf = null;
       const vv = window.visualViewport;
       const h = Math.round(vv ? vv.height : window.innerHeight);
-      const top = Math.round(vv ? vv.offsetTop : 0);
       if (this._lastH !== h) { this._lastH = h; document.documentElement.style.setProperty("--app-h", h + "px"); }
-      const stage = this.rootRef.current;
-      if (stage) {
-        const fill = window.matchMedia("(max-width:440px),(max-height:880px)").matches;
-        if (fill) {
-          const tf = "translateY(" + top + "px)";
-          if (stage.style.position !== "fixed") {
-            stage.style.position = "fixed"; stage.style.top = "0"; stage.style.left = "0"; stage.style.right = "0";
-          }
-          if (this._lastTf !== tf) { this._lastTf = tf; stage.style.transform = tf; }
-        } else if (stage.style.position === "fixed") {
-          stage.style.position = ""; stage.style.top = ""; stage.style.left = ""; stage.style.right = ""; stage.style.transform = "";
-          this._lastTf = null;
-        }
-      }
       const el = this.chatRef.current;
       if (el) el.scrollTop = el.scrollHeight;
     });
