@@ -84,7 +84,7 @@
             </div>
           </div>
           <div style="display:flex; flex:1; gap:8px; align-items:center; justify-content:flex-end; min-width:0;">
-            <div onClick="{{ goTalkback }}" style="background:var(--accent,#c6002b); padding:4px; border-radius:999px; box-shadow:0 1px 1.5px rgba(0,0,0,0.12); cursor:pointer; display:flex;">
+            <div onClick="{{ headerMic }}" style="background:var(--accent,#c6002b); padding:4px; border-radius:999px; box-shadow:0 1px 1.5px rgba(0,0,0,0.12); cursor:pointer; display:flex;">
               <div style="width:32px; height:32px; display:flex; align-items:center; justify-content:center;">
                 <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3z" fill="#fff"></path><path d="M6 11a6 6 0 0 0 12 0M12 17v3M9 21h6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>
               </div>
@@ -101,21 +101,6 @@
       <!-- Scrollable content -->
       <div class="hide-sb" onScroll="{{ onScroll }}" style="overflow-y:auto;">
         <div style="display:flex; flex-direction:column; gap:16px; padding:16px 0; min-height:100%; box-sizing:border-box;">
-
-          <!-- Send Talkback CTA -->
-          <div style="margin-top:-16px;">
-            <div onClick="{{ goTalkback }}" style="display:flex; flex-direction:row; align-items:center; gap:8px; height:44px; padding:12px 16px 12px 0; border-radius:0; background:var(--accent,#c6002b); box-shadow:0 1px 3px rgba(0,0,0,0.12); cursor:pointer; overflow:hidden;">
-              <div style="flex:1; min-width:0; overflow:hidden;">
-                <div style="display:inline-flex; white-space:nowrap; animation:tbmarquee 14s linear infinite; will-change:transform;">
-                  <span style="font-family:'SF Pro Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-weight:600; font-size:16px; line-height:20px; color:#fff; padding-right:48px;">Your chance to be on the radio!</span>
-                  <span style="font-family:'SF Pro Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-weight:600; font-size:16px; line-height:20px; color:#fff; padding-right:48px;">Send a Talkback or Text</span>
-                  <span aria-hidden="true" style="font-family:'SF Pro Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-weight:600; font-size:16px; line-height:20px; color:#fff; padding-right:48px;">Your chance to be on the radio!</span>
-                  <span aria-hidden="true" style="font-family:'SF Pro Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-weight:600; font-size:16px; line-height:20px; color:#fff; padding-right:48px;">Send a Talkback or Text</span>
-                </div>
-              </div>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;"><g transform="translate(8.46 6)"><path d="M 0.314 0.316 C -0.105 0.735 -0.105 1.412 0.314 1.831 L 4.484 6.001 L 0.314 10.17 C -0.105 10.589 -0.105 11.267 0.314 11.686 C 0.733 12.105 1.41 12.105 1.83 11.686 L 6.762 6.753 C 7.181 6.334 7.181 5.657 6.762 5.238 L 1.83 0.305 C 1.421 -0.103 0.733 -0.103 0.314 0.316 Z" fill="#fff" fill-rule="evenodd"></path></g></svg>
-            </div>
-          </div>
 
           <!-- Tabs -->
           <div class="hide-sb" style="overflow-x:auto; width:100%;">
@@ -178,6 +163,18 @@
           <!-- ═══ STATION tab content ═══ -->
           <sc-if value="{{ isStationTab }}" hint-placeholder-val="{{ true }}">
           <div style="display:flex; flex-direction:column; gap:16px;">
+          <!-- Talkback input -->
+          <div style="padding:0 16px; display:flex; flex-direction:column; gap:4px;">
+            <p style="margin:0; font-weight:600; font-size:20px; line-height:24px; color:#27292d;">Send a Message</p>
+            <div style="display:flex; flex-direction:column; justify-content:flex-end; gap:8px; background:rgb(230,234,237); border:1px solid rgb(169,175,178); border-radius:6px;">
+              <textarea data-e-input placeholder="Enter contest keyword, request a song, or give a shout out" style="border:none; background:transparent; resize:none; outline:none; padding:12px 16px; min-height:72px; font-family:'SF Pro Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-weight:400; font-size:16px; line-height:20px; color:#27292d;"></textarea>
+              <div style="display:flex; flex-direction:row; gap:8px; padding:8px 16px; justify-content:flex-end; align-items:center;">
+                <div onClick="{{ confirmSend }}" style="width:32px; height:32px; border-radius:999px; background:rgb(0,85,183); display:flex; align-items:center; justify-content:center; flex-shrink:0; cursor:pointer;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M5 12l7-7 7 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- Trending -->
           <div style="display:flex; flex-direction:column; gap:8px;">
             <div style="padding:0 16px;"><p style="margin:0; font-weight:600; font-size:20px; line-height:24px; color:#27292d;">Trending</p></div>
@@ -696,6 +693,43 @@
     </sc-if>
 
     <!-- ════════════ NATIVE NOTIFICATION PERMISSION MODAL ════════════ -->
+    <sc-if value="{{ showSendConfirm }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute; inset:0; z-index:55; display:flex; align-items:center; justify-content:center; padding:0 28px;">
+      <div onClick="{{ cancelSend }}" style="position:absolute; inset:0; background:rgba(0,0,0,0.3);"></div>
+      <div style="position:relative; display:flex; flex-direction:column; align-items:center; padding:24px 16px; gap:16px; width:300px; background:#F6F8F9; box-shadow:0 3px 5px rgba(0,0,0,0.12); border-radius:6px; animation:tbpop .2s ease;">
+        <div style="display:flex; flex-direction:column; align-items:flex-start; gap:8px; width:268px;">
+          <p style="margin:0; width:100%; font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-weight:600; font-size:18px; line-height:24px; letter-spacing:-0.5px; text-align:center; color:#27292D;">Send this message?</p>
+          <p style="margin:0; width:100%; font-family:'SF Pro Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-weight:400; font-size:14px; line-height:16px; text-align:center; color:#27292D;">Your message will be sent to Z100.</p>
+        </div>
+        <div style="display:flex; flex-direction:row; justify-content:center; align-items:center; gap:12px; width:268px;">
+          <div onClick="{{ cancelSend }}" style="flex:1; display:flex; justify-content:center; align-items:center; padding:12px 16px; border-radius:999px; border:1px solid #27292D; cursor:pointer;">
+            <span style="font-family:'SF Pro Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-weight:600; font-size:16px; line-height:20px; color:#27292D;">Cancel</span>
+          </div>
+          <div onClick="{{ doSend }}" style="flex:1; display:flex; justify-content:center; align-items:center; padding:12px 16px; background:#C6002B; box-shadow:0 1px 3px rgba(0,0,0,0.12); border-radius:999px; cursor:pointer;">
+            <span style="font-family:'SF Pro Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-weight:600; font-size:16px; line-height:20px; color:#FFFFFF;">Send</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ════════════ EMPTY MESSAGE MODAL ════════════ -->
+    <sc-if value="{{ showEmptyMsg }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute; inset:0; z-index:55; display:flex; align-items:center; justify-content:center; padding:0 28px;">
+      <div onClick="{{ dismissEmpty }}" style="position:absolute; inset:0; background:rgba(0,0,0,0.3);"></div>
+      <div style="position:relative; display:flex; flex-direction:column; align-items:center; padding:24px 16px; gap:16px; width:300px; background:#F6F8F9; box-shadow:0 3px 5px rgba(0,0,0,0.12); border-radius:6px; animation:tbpop .2s ease;">
+        <div style="display:flex; flex-direction:column; align-items:flex-start; gap:8px; width:268px;">
+          <p style="margin:0; width:100%; font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-weight:600; font-size:18px; line-height:24px; letter-spacing:-0.5px; text-align:center; color:#27292D;">Enter a message</p>
+          <p style="margin:0; width:100%; font-family:'SF Pro Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-weight:400; font-size:14px; line-height:16px; text-align:center; color:#27292D;">Please enter a message before sending.</p>
+        </div>
+        <div onClick="{{ dismissEmpty }}" style="display:flex; justify-content:center; align-items:center; width:268px; padding:12px 16px; background:#C6002B; box-shadow:0 1px 3px rgba(0,0,0,0.12); border-radius:999px; cursor:pointer;">
+          <span style="font-family:'SF Pro Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-weight:600; font-size:16px; line-height:20px; color:#FFFFFF;">OK</span>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ════════════ NATIVE NOTIFICATION PERMISSION MODAL ════════════ -->
     <sc-if value="{{ showNotif }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute; inset:0; z-index:50; display:flex; align-items:center; justify-content:center; padding:0 28px;">
       <div onClick="{{ closeNotif }}" style="position:absolute; inset:0; background:rgba(0,0,0,0.3);"></div>
@@ -736,7 +770,7 @@
 </div>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:375,&quot;height&quot;:812},&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;station&quot;,&quot;talkback&quot;],&quot;default&quot;:&quot;station&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;platform&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;ios&quot;,&quot;android&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#c6002b&quot;,&quot;options&quot;:[&quot;#c6002b&quot;,&quot;#0055b7&quot;,&quot;#7b1fa2&quot;,&quot;#1f8a5b&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;replyDelay&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:4000,&quot;min&quot;:1000,&quot;max&quot;:15000,&quot;step&quot;:1000,&quot;unit&quot;:&quot;ms&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Demo&quot;}}">
+<script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
   constructor(props) {
     super(props);
@@ -1086,6 +1120,12 @@ class Component extends DCLogic {
       npTitleStyle: { padding: "8px 16px", fontWeight: 600, fontSize: "16px", lineHeight: "20px", color: s.stationTab === "nowplaying" ? "#27292d" : "#3f4447", whiteSpace: "nowrap", cursor: "pointer" },
       stTitleStyle: { padding: "8px 16px", fontWeight: 600, fontSize: "16px", lineHeight: "20px", color: s.stationTab === "station" ? "#27292d" : "#3f4447", whiteSpace: "nowrap", cursor: "pointer" },
       goTalkback: () => this.setState({ screen: "talkback" }),
+      showSendConfirm: s.showSendConfirm === true,
+      showEmptyMsg: s.showEmptyMsg === true,
+      dismissEmpty: () => this.setState({ showEmptyMsg: false }),
+      confirmSend: () => { try { const t = this.rootRef.current && this.rootRef.current.querySelector("textarea[data-e-input]"); if (!t || !t.value.trim()) { this.setState({ showEmptyMsg: true }); return; } } catch (e) {} this.setState({ showSendConfirm: true }); },
+      cancelSend: () => this.setState({ showSendConfirm: false }),
+      doSend: () => { if (this._snackTimer) clearTimeout(this._snackTimer); try { const t = this.rootRef.current && this.rootRef.current.querySelector("textarea[data-e-input]"); if (t) t.value = ""; } catch (e) {} this.setState({ showSendConfirm: false, showSnack: true }); this._snackTimer = setTimeout(() => this.setState({ showSnack: false }), 4000); },
       goTalkbackVoice: () => this.setState({ screen: "talkback", tab: "voice" }),
       goTalkbackText: () => this.setState({ screen: "talkback", tab: "text" }),
       goStation: () => this.setState({ screen: "station" }),
@@ -1108,7 +1148,8 @@ class Component extends DCLogic {
       vCountdownCanvasRef: this.vCountdownCanvasRef,
       startVoiceRec: (e) => { if (e && e.preventDefault) e.preventDefault(); this.startVoiceRec(); },
       showMicPrompt: s.showMicPrompt === true,
-      allowMic: () => { this.setState({ showMicPrompt: false, micGranted: true }); this._beginCountdown(); },
+      headerMic: () => this.setState({ showMicPrompt: true }),
+      allowMic: () => { this.setState({ showMicPrompt: false, micGranted: true, screen: "talkback", tab: "voice" }); this._beginCountdown(); },
       denyMic: () => this.setState({ showMicPrompt: false }),
       cancelCountdown: () => { if (this._cdTimer) { clearInterval(this._cdTimer); this._cdTimer = null; } this.setState({ voiceRec: "idle", vCountdown: 3, vSeconds: 0 }); },
       stopVoiceRec: () => this.stopVoiceRec(),
