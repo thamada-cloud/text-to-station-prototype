@@ -168,11 +168,18 @@
           <div style="padding:0 16px; display:flex; flex-direction:column; gap:4px;">
             <p style="margin:0; font-weight:600; font-size:20px; line-height:24px; color:#27292d;">Send a Message</p>
             <div style="display:flex; flex-direction:column; justify-content:flex-end; gap:8px; background:rgb(230,234,237); border:1px solid rgb(169,175,178); border-radius:6px;">
-              <textarea data-e-input onFocus="{{ eFocus }}" onBlur="{{ eBlur }}" placeholder="Enter contest keyword, request a song, or give a shout out" style="border:none; background:transparent; resize:none; outline:none; padding:12px 16px; min-height:72px; font-family:'SF Pro Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-weight:400; font-size:16px; line-height:20px; color:#27292d;"></textarea>
+              <textarea data-e-input onFocus="{{ eFocus }}" onBlur="{{ eBlur }}" onInput="{{ eInput }}" placeholder="Enter contest keyword, request a song, or give a shout out" style="border:none; background:transparent; resize:none; outline:none; padding:12px 16px; min-height:72px; font-family:'SF Pro Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-weight:400; font-size:16px; line-height:20px; color:#27292d;"></textarea>
               <div style="display:flex; flex-direction:row; gap:8px; padding:8px 16px; justify-content:flex-end; align-items:center;">
+                <sc-if value="{{ eHasText }}" hint-placeholder-val="{{ false }}">
                 <div onMouseDown="{{ confirmSend }}" style="width:32px; height:32px; border-radius:999px; background:rgb(0,85,183); display:flex; align-items:center; justify-content:center; flex-shrink:0; cursor:pointer;">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M5 12l7-7 7 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                 </div>
+                </sc-if>
+                <sc-if value="{{ eNoText }}" hint-placeholder-val="{{ true }}">
+                <div style="width:32px; height:32px; border-radius:999px; background:rgb(197,205,210); display:flex; align-items:center; justify-content:center; flex-shrink:0; cursor:default;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M5 12l7-7 7 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </div>
+                </sc-if>
               </div>
             </div>
           </div>
@@ -637,6 +644,11 @@
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M5 12l7-7 7 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                 </div>
               </sc-if>
+              <sc-if value="{{ noInput }}" hint-placeholder-val="{{ true }}">
+                <div style="background:#c5cdd2; border-radius:999px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; flex-shrink:0; cursor:default;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M5 12l7-7 7 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </div>
+              </sc-if>
             </div>
             <sc-if value="{{ kbOpen }}" hint-placeholder-val="{{ false }}">
             <div style="display:flex; align-items:center; justify-content:flex-end; padding:10px 4px 2px;">
@@ -793,6 +805,7 @@ class Component extends DCLogic {
       input: "",
       kbOpen: false,
       stationKb: false,
+      eHasText: false,
       notifModal: false,
       notifDenied: false,
       showMicPrompt: false,
@@ -1103,6 +1116,9 @@ class Component extends DCLogic {
       showBottomBar: !s.stationKb,
       eFocus: () => this.setState({ stationKb: true }),
       eBlur: () => this.setState({ stationKb: false }),
+      eInput: (e) => this.setState({ eHasText: e.target.value.trim().length > 0 }),
+      eHasText: s.eHasText,
+      eNoText: !s.eHasText,
       isNowPlaying: s.stationTab === "nowplaying",
       npUnderline: s.stationTab === "nowplaying" ? (this.props.accent || "#c6002b") : "transparent",
       stUnderline: s.stationTab === "station" ? (this.props.accent || "#c6002b") : "transparent",
@@ -1116,7 +1132,7 @@ class Component extends DCLogic {
       dismissEmpty: () => this.setState({ showEmptyMsg: false }),
       confirmSend: () => { try { const t = this.rootRef.current && this.rootRef.current.querySelector("textarea[data-e-input]"); if (!t || !t.value.trim()) { this.setState({ showEmptyMsg: true }); return; } } catch (e) {} this.setState({ showSendConfirm: true }); },
       cancelSend: () => this.setState({ showSendConfirm: false }),
-      doSend: () => { if (this._snackTimer) clearTimeout(this._snackTimer); try { const t = this.rootRef.current && this.rootRef.current.querySelector("textarea[data-e-input]"); if (t) t.value = ""; } catch (e) {} this.setState({ showSendConfirm: false, showSnack: true }); this._snackTimer = setTimeout(() => this.setState({ showSnack: false }), 4000); },
+      doSend: () => { if (this._snackTimer) clearTimeout(this._snackTimer); try { const t = this.rootRef.current && this.rootRef.current.querySelector("textarea[data-e-input]"); if (t) t.value = ""; } catch (e) {} this.setState({ showSendConfirm: false, showSnack: true, eHasText: false }); this._snackTimer = setTimeout(() => this.setState({ showSnack: false }), 4000); },
       goTalkbackVoice: () => this.setState({ screen: "talkback", tab: "voice" }),
       goTalkbackText: () => this.setState({ screen: "talkback", tab: "text" }),
       goStation: () => this.setState({ screen: "station" }),
@@ -1157,6 +1173,7 @@ class Component extends DCLogic {
       onKey: (e) => { if (e.key === "Enter") this.send(); },
       send: (e) => { if (e && e.preventDefault) e.preventDefault(); this.send(); },
       hasInput: s.input.trim().length > 0,
+      noInput: s.input.trim().length === 0,
       count: s.input.length,
       clearInput: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ input: "" }); },
       kbOpen: s.kbOpen,
