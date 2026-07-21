@@ -344,7 +344,7 @@
 
       <!-- Fixed bottom: miniplayer + nav -->
       <sc-if value="{{ showBottomBar }}" hint-placeholder-val="{{ true }}">
-      <div style="background:#fff; padding-bottom:16px;">
+      <div style="background:#fff; padding-bottom:max(6px, env(safe-area-inset-bottom));">
         <sc-if value="{{ isStationTab }}" hint-placeholder-val="{{ true }}">
         <div style="box-shadow:0 -1px 1.5px rgba(0,0,0,0.12);">
           <div style="display:flex; gap:12px; align-items:center; padding:4px 12px 4px 4px;">

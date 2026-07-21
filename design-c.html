@@ -181,7 +181,7 @@
                     <span style="font-family:'SF Pro Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-weight:600; font-size:14px; line-height:20px; color:#C6002B; white-space:nowrap;">Send Talkback</span>
                   </div>
                   <div onClick="{{ goTalkbackText }}" style="flex:1; display:flex; flex-direction:row; justify-content:center; align-items:center; gap:4px; height:36px; padding:8px 16px; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.12); border-radius:999px; cursor:pointer; box-sizing:border-box;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;"><path d="M5 3h14a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-8l-4.5 4v-4H5a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3z" fill="#C6002B"></path></svg>
+                    <svg width="16" height="16" viewBox="0 0 40 40" fill="none" style="flex-shrink:0;"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.9306 5.8335C27.7818 5.8335 34.1197 12.1359 34.167 20.0262C34.1668 27.865 27.8292 34.1155 20.0728 34.1668C17.3297 34.1668 14.7753 33.3986 12.647 32.1177C12.3162 31.9129 11.9381 31.8098 11.6544 31.9631L4.96719 34.0643C4.49422 34.218 4.02047 33.7563 4.20965 33.244L7.63306 27.7622C7.72763 27.4036 7.68137 26.9938 7.49229 26.6864C6.45177 24.6369 5.78857 22.3309 5.78857 19.8716C5.78884 12.1353 12.0324 5.83357 19.9306 5.8335Z" fill="#C6002B"></path></svg>
                     <span style="font-family:'SF Pro Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-weight:600; font-size:14px; line-height:20px; color:#C6002B; white-space:nowrap;">Send Text</span>
                   </div>
                 </div>
@@ -349,7 +349,7 @@
       </div>
 
       <!-- Fixed bottom: miniplayer + nav -->
-      <div style="background:#fff; padding-bottom:16px;">
+      <div style="background:#fff; padding-bottom:max(6px, env(safe-area-inset-bottom));">
         <sc-if value="{{ isStationTab }}" hint-placeholder-val="{{ true }}">
         <div style="box-shadow:0 -1px 1.5px rgba(0,0,0,0.12);">
           <div style="display:flex; gap:12px; align-items:center; padding:4px 12px 4px 4px;">
